@@ -1,0 +1,21 @@
+{
+  "llave": "valor",
+  "key": "value",
+  "nombre": "Fernando",
+  "apellido": "Pogo",
+  "edad": 29,
+  "sueldo": 129.5,
+  "casado": false,
+  "hijos": null,
+  "enamorada": ["Carolina","Chuqui",{
+    "llave": "valor",
+    "key": "value",
+    "nombre": "Fernando",
+    "apellido": "Pogo",
+    "edad": 29,
+    "sueldo": 129.5,
+    "casado": false,
+    "hijos": null,
+    "enamorada": ["Carolina","Chuqui"]
+  }]
+}
