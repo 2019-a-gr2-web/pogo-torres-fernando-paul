@@ -1,18 +1,58 @@
-import {Controller, Get, Post} from '@nestjs/common';
+import {Controller, Get, Post, HttpCode, Put, Delete, Headers} from '@nestjs/common';
 import { AppService } from './app.service';
 
-@Controller()
+//http://192.168.1.10:3000/SegmentoInicial/SegmentoAccion
+// @Controller (SegmentoInicial)
+@Controller('/api')
 export class AppController {
   constructor(private readonly appService: AppService) {}
-
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  // @Get(SegmentoAccion)
+  @Get('hello-world')    //Metodo HTTP
+  getHello(){
+    return 'Run bitch... Run!!!!';
   }
 
-  @Post()
+  @Post('hola-mundo')
   postHello() {
-    return 'Hola mi nuevo mundo en post';
+    return 'Llego la hora de la purificación';
+  }
+
+  @Put('ciao-mondo')
+  putHello(){
+    return 'Grazie per esistere';
+  }
+
+  @Delete('salut-monde')
+  deleteHello(){
+    return 'Je l\'aime à mourir';
+  }
+
+  @Get('/adivina')
+  adivina(@Headers() headers): string{
+     console.log('Headers: ', headers)
+     const numeroRandomico = Math.round(Math.random()*100);
+     const numeroDeCabecera = Number(headers.numero);
+     if(numeroDeCabecera == numeroRandomico){
+        return '';
+     }
+     else
+     {
+       return ':('
+     }
+    //var nombre = 'fernando'; //string
+    // var edad= 23; //number
+    //var sueldo= 1.20; //number
+    //var casado= false; //boolean
+    //var hijos = null; //null
+    //var alas = undefined; //undefined
+
+    // js -> ts
+    //let nombre: string = 'Fernando'; //String
+    //let edad:number = 23; //number
+    //let sueldo:number = 1.20; //number
+    //let casado:boolean = false; //boolean
+    //let hijos = null; //null
+    //let alas = undefined; //undefined
   }
 }
 /*
@@ -37,3 +77,31 @@ class usuario{
 }
 */
 
+const json =
+    [{
+        "llave": "valor",
+        "key": "value",
+        "nombre": "Fernando",
+        "apellido": "Pogo",
+        "edad": 29,
+        "sueldo": 129.5,
+        "casado": false,
+        "hijos": null,
+        "enamorada": ["Carolina","Chuqui"]
+      }];
+
+let objeto:any = {
+  propiedad: 'valor',
+  propiedadDos: 'valor2'
+};
+
+objeto.propiedad // valor
+objeto.propiedadDos //valor2
+
+//Agregar propiedades a un objeto
+objeto.propiedadTres = 'valor3';
+objeto['propiedadCuatro'] = 'valor4';
+
+//Eliminar propiedades
+delete objeto.propiedadTres; // Destruir
+objeto.propiedadCuatro; // Destruir
