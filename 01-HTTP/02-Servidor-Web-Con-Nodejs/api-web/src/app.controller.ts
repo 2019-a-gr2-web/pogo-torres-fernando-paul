@@ -1,4 +1,4 @@
-import {Controller, Get, Post, HttpCode, Put, Delete, Headers} from '@nestjs/common';
+import {Controller, Get, Post,Query, Param, Body, Request, Response, HttpCode, Put, Delete, Headers} from '@nestjs/common';
 import { AppService } from './app.service';
 
 //http://192.168.1.10:3000/SegmentoInicial/SegmentoAccion
@@ -39,6 +39,7 @@ export class AppController {
      {
        return ':('
      }
+
     //var nombre = 'fernando'; //string
     // var edad= 23; //number
     //var sueldo= 1.20; //number
@@ -53,6 +54,69 @@ export class AppController {
     //let casado:boolean = false; //boolean
     //let hijos = null; //null
     //let alas = undefined; //undefined
+  }
+
+  //?llave1=valor1&llave2=valor2nmp
+  @Get('/consultar')
+    consultar(@Query() queryParams){
+      console.log(queryParams);
+      if(queryParams.nombre) {
+          return `Hola ${queryParams.nombre}`
+      }
+      else{
+          return 'No saludo a extraños '
+      }
+  }
+
+  @Get('/ciudad/:idCiudad/:idBarrio')
+    ciudad(@Param() parametrosRuta){
+        switch (parametrosRuta.idCiudad.toLowerCase()){
+            case 'quito':
+                return 'Que mas ve'
+            case 'guayaquil':
+                return 'Que mas ñaños'
+            default:
+                return 'Estas equivocado'
+        }
+  }
+
+  @Post('/registroComida')
+    registroComida(@Body() parametrosCuerpo,
+                   @Response() response){
+      if(parametrosCuerpo.nombre && parametrosCuerpo.cantidad){
+          const cantidad = Number(parametrosCuerpo.cantidad);
+          if(cantidad>1){
+              response.set('Premio','Encebollado');
+          }
+
+              return response.send('Registro creado');
+
+
+      }
+      else
+      {
+          return response.status(400)
+              .send({
+                 mensaje:'Error, no envia nombre o cantidad',
+                error: 400
+      });
+      }
+      console.log(parametrosCuerpo);
+      return 'ok'
+  }
+
+  @Get('/semilla')
+    semilla(@Request() request){
+      console.log(request.cookies);
+      const cookies = request.cookies;
+      if(cookies.miCookie){
+          return 'Todo esta muy bien'
+      }
+      else
+      {
+          return 'Ya valiste';
+      }
+
   }
 }
 /*
