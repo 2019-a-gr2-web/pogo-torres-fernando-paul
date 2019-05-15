@@ -1,5 +1,6 @@
 import {Controller, Get, Post,Query, Param, Body, Request, Response, HttpCode, Put, Delete, Headers} from '@nestjs/common';
 import { AppService } from './app.service';
+import * as Joi from '@hapi/joi';
 
 //http://192.168.1.10:3000/SegmentoInicial/SegmentoAccion
 // @Controller (SegmentoInicial)
@@ -106,18 +107,64 @@ export class AppController {
   }
 
   @Get('/semilla')
-    semilla(@Request() request){
+    semilla(@Request() request,
+            @Response() response){
       console.log(request.cookies);
-      const cookies = request.cookies;
-      if(cookies.miCookie){
-          return 'Todo esta muy bien'
+      const cookies = request.cookies;  // Json
+      const esquemaValidacionNumero = Joi.object().keys({
+          numero: Joi.number().integer().required()
+      });
+
+      const objetoValidacion=Joi.validate({
+          numero: cookies.numero
+      });
+
+      const resultado = Joi.validate(objetoValidacion, esquemaValidacionNumero);
+      if(resultado.error)
+      {
+          console.log('Resultado: ', resultado);
       }
       else
       {
-          return 'Ya valiste';
+          console.log('Numero valido');
+      }
+
+      const cookieSegura = request.signedCookies.fechaServidor;
+      if(cookieSegura)
+      {
+          console.log('Cookie segura');
+      }
+      else
+      {
+          console.log('No es valida esta cookie');
+      }
+      if(cookies.miCookie){
+          const horaFechaServidor = new Date();
+          const minutos = horaFechaServidor.getMinutes();
+          horaFechaServidor.setMinutes(minutos + 1);
+
+          response.cookie(
+              'fechaServidor',
+              new Date().getTime(),
+          {
+              signed: true
+          }
+          );
+          return response.send('Todo Bien')
+      }
+      else
+      {
+          return response.send('No sirve')
       }
 
   }
+
+  @Get('inicio')
+    inicio(@Response() res){
+      return res.render('inicio');
+  }
+
+
 }
 /*
 @nombreDecorador() //Se usan antes de instanciar atributos, metodos o parametros en decoradores
@@ -169,3 +216,121 @@ objeto['propiedadCuatro'] = 'valor4';
 //Eliminar propiedades
 delete objeto.propiedadTres; // Destruir
 objeto.propiedadCuatro; // Destruir
+
+
+// Variables ? const, var, let
+// string, numbre, boolean
+
+function holaMundo(){
+    console.log('Ya llevame dios');
+}
+
+const respuestaHolaMundo = holaMundo(); //undefined
+console.log('Resp hola mundo: ', respuestaHolaMundo);
+
+function suma(a: number,b: number):number{
+    return a+b;
+}
+const respuestaSuma = suma(1,2); //3
+console.log('Resp suma: ', respuestaSuma);
+
+
+// Condicionales
+// Truty > true
+// Falsy > false
+if(true){  //Truty
+    console.log('Verdadero');
+}else{
+    console.log('Falso');
+}
+
+if(false){ //Falsy
+    console.log('Falso');
+}else{
+    console.log('Verdadero');
+}
+
+if(""){ //Falsy
+    console.log('Falso');
+}else{
+    console.log('Verdadero');
+}
+if("a"){
+    console.log('Falso');
+}else{
+    console.log('Verdadero');
+}
+if(0){ //Falsy
+    console.log('Falso');
+}else{
+    console.log('Verdadero');
+}
+if('0'){ //Truty
+    console.log('Falso');
+}else{
+    console.log('Verdadero');
+}
+
+
+// Operadores de Arreglos en JS
+
+const arreglo =[1,2,3,4,5,6]
+
+// 1) Imprimir en consola todos los elementos
+const rForEach = arreglo.forEach( function (valorActual, indice, arreglo)
+{
+    console.log(`Valor: ${valorActual}`);
+    console.log(`Indice: ${indice}`);
+    console.log(`Arreglo: ${arreglo}`);
+});
+console.log(`RESPUESTA FOREACH: ${rForEach}`);
+
+const r2ForEach = arreglo.forEach(n=> console.log(`${n}`))
+console.log(`RESPUESTA FOREACH: ${r2ForEach}`);
+
+// 2) sumen 2 a los pares y 1 a los impares
+
+const  arregloNumerosMap = [1,2,3,4,5,6]
+const rMap = arregloNumerosMap
+    .map( //Devolver el nuevo VALOR de ese elemento
+        (valorActual)=>{
+            const esPar = valorActual%2==0;
+            if(esPar){
+                const nuevoValor = valorActual +2;
+                return nuevoValor;
+            }else{
+                const nuevoValor = valorActual +1;
+                return nuevoValor;
+                return valorActual  +1;
+            }
+});
+
+console.log(`RESPUESTA MAP: ${rMap}`); // Nuevo Arreglo
+
+// 3) encuentren si hay el numero 4
+const arregloNumerosFind = [1,2,3,4,5,6];
+
+const rFind = arregloNumerosFind
+    .find(//CONDICION para devolver esse elemento
+        (valorActual)=>{
+            return valorActual==4;
+        });
+console.log(`Respuesta FIND: ${rFind}`);
+
+// 4) Filtren los numeros menores a 5
+const arregloNumerosFilter = [1,2,3,4,5,6];
+
+const rFiltaer = arregloNumerosFilter
+    .filter(//CONDICION TRUE => Agrregar al arreglo
+            //CONDICION FALSA => Se omite del arreglo
+            (valorActual)=>{
+                return valorActual <5;
+            });
+// 5) Todos los valores son positivos??
+// 6) Algun valor es menor que 2??
+// 8) Sumen todos los valores
+// 9) Resten todos los valores de 100
+
+// 1.1) Sumen 10 a todos
+// 1.2) Filtren a los mayores a 15
+// 1.3) Si hay algun numero mayor a 30
