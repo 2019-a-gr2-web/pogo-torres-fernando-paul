@@ -182,6 +182,18 @@ export class AppController {
     }
 
 
+    @Get('styles')
+    styles(
+        @Response() res
+    ){
+        return res.render(
+            'movies/styles',
+            {
+
+            });
+    }
+
+
 }
 /*
 @nombreDecorador() //Se usan antes de instanciar atributos, metodos o parametros en decoradores
