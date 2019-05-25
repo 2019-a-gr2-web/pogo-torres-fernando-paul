@@ -6,6 +6,9 @@ import * as Joi from '@hapi/joi';
 // @Controller (SegmentoInicial)
 @Controller('/api')
 export class AppController {
+
+    arregloUsuario = [];
+
   constructor(private readonly appService: AppService) {}
   // @Get(SegmentoAccion)
   @Get('hello-world')    //Metodo HTTP
