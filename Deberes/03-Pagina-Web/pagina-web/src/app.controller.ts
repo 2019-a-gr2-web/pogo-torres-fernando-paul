@@ -9,4 +9,9 @@ export class AppController {
   inicio(@Response() res){
     return res.render('inicio');
   }
+
+  @Get('back')
+  back(@Response() res){
+    return res.render('back');
+  }
 }
