@@ -8,9 +8,8 @@ import * as express from 'express'
 async function bootstrap() {
   const app = await NestFactory
       .create(AppModule) as NestExpressApplication;
-
+  app.use(express.static('public'))
   app.setViewEngine('ejs');
-  app.use(express.static('images'))
   app.setBaseViewsDir(join(__dirname,'..','views'));
   await app.listen(3000);
 }
