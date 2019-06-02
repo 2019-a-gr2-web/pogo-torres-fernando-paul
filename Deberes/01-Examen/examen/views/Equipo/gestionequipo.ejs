@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tienda</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="col-sm-12">
+        <div class="cabecera row text-right">
+            <div class="col-sm-6">
+                <span class="text-sm-right"> <%=usuario%></span>
+            </div>
+            <div class="col-sm-6">
+                <a href="http://localhost:3000/examen/login">
+                    <button  type="button" class="btn btn-sm btn-primary">Salir</button>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="espacio"></div>
+    <div class="col-sm-12">
+        <form action="/examen/equipo/buscar" class="form-horizontal" method="post">
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="busquedaId" placeholder="Busqueda" name="busqueda">
+                </div>
+                <div class="col-sm-2 text-right"><button type="submit" class="btn btn-sm btn-primary">buscar</button></div>
+            </div>
+        </form>
+    </div>
+    <div class="col-sm-12">
+        <div class="form-group row text-right">
+            <div class="col-sm-12">
+
+                <a href="http://localhost:3000/examen/equipo/crear">
+                    <button type="button" class="btn btn-sm btn-primary">Crear</button>
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row text-center">
+        <div class="col-sm-12">
+            <table class="table table-md table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Liga</th>
+                    <th>Fecha Creación</th>
+                    <th>Número de Copas Internacionales</th>
+                    <th>Campeon Actual</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <% listaEquipo.forEach((equipo)=>{ %>
+                    <tr>
+                        <td><%= equipo.nombre %></td>
+                        <td><%= equipo.liga %></td>
+                        <td><%= equipo.fechaCreacion %></td>
+                        <td><%= equipo.numeroCopasInternacionales %></td>
+                        <td><%if(equipo.campeonActual){%>
+                                <input type="checkbox" checked disabled>
+                            <%}else{%>
+                                <input type="checkbox" disabled>
+                            <%}%>
+                        </td>
+                        <td>
+                            <form action="/examen/equipo/eliminar" method="post">
+                                <input type="text" name="equipoId" hidden value="<%=equipo.equipoId%> ">
+                                <button type="submit" class="btn btn-xs btn-info">Borrar</button>
+                                <a href="http://localhost:3000/examen/equipo/gestion/<%=equipo.equipoId%>">
+                                    <button type="button" class="btn btn-xs btn-info">Gestionar Jugadores</button>
+                                </a>
+                            </form>
+                        </td>
+                    </tr>
+                <% })%>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <a href="http://localhost:3000/examen/menu" class="btn btn-sm btn-primary" role="button">Regresar</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
