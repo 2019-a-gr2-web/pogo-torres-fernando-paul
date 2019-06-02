@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Equipo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="col-sm-12">
+        <div class="cabecera row text-right">
+            <div class="col-sm-6">
+                <span class="text-sm-right"> <%=usuario%></span>
+            </div>
+            <div class="col-sm-6">
+                <a href="http://localhost:3000/examen/login">
+                    <button  type="button" class="btn btn-sm btn-primary">Salir</button>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class=" titulo col-sm-12">
+        <div class="form-group text-center">
+            <h2>Nuevo Jugador</h2>
+        </div>
+    </div>
+
+    <div class="col-sm-12">
+        <form action="/examen/equipo/gestion/crear/<%=idEquipo%>" class="form-horizontal" method="post">
+            <div class="form-group row hidden">
+                <label for="idEquipo" class="control-label col-sm-2">id Equipo:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="idEquipo" name="idEquipo" value="<%=idEquipo%>">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="numeroCamiseta" class="control-label col-sm-2">Numero Camiseta:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="numeroCamiseta" name="numeroCamiseta">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="nombreCamiseta" class="control-label col-sm-2">Nombre Camiseta:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="nombreCamiseta" name="nombreCamiseta">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="nombreCompletoJugador" class="control-label col-sm-2">Nombre Completo:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="nombreCompletoJugador" name="nombreCompletoJugador">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="poderEspecialDos" class="control-label col-sm-2">Poder Especial:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="poderEspecialDos" name="poderEspecialDos">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="fechaingresoEquipo" class="control-label col-sm-2">Fecha Ingreso Equipo:</label>
+                <div class="col-sm-10">
+                    <input type="date" class="form-control" id="fechaingresoEquipo" name="fechaingresoEquipo">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="goles" class="control-label col-sm-2">Goles:</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="goles" name="goles" min="0" step="1">
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="text-center">
+                    <a href="http://localhost:3000/examen/equipo/gestion/<%=idEquipo%>" class="btn btn-sm btn-primary" role="button">Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-sm btn-primary">Guardar</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>
