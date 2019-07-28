@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Juego WebSockets</title>
+
+</head>
+<body>
+<div class="row">
+    <div class="col-sm-12">
+        <h1 id="titulo">Adivina el número de tu contrincante</h1>
+</div>
+</div>
+<!--<p class="par" onmouseenter="clicParrafo()">Segundo</p>-->
+<div id="jugadores"></div>
+<div id="contenedor-chat"></div>
+<div id="respuesta">
+    <p id="espera" hidden><strong>Esperando respuesta de otro jugador ...</strong></p>
+    <label for="chat-texto" id="labelt">Coloca un número: </label>
+    <input type="text" id="chat-texto">
+    <button id="boton" onclick="chattxt()">Enviar</button>
+</div>
+
+
+<!--Script-->
+<script>
+
+    function verificarNumero(numero, numero1) {
+        const letraval = numero1;
+        if (letraval == numero){
+            return 1;
+        }else {
+            return 2;
+        }
+    }
+    function chattxt() {
+        const boton = document.getElementById('boton');
+        const input = document.getElementById('chat-texto');
+        const label = document.getElementById('labelt');
+        const parrafor = document.getElementById('espera');
+        boton.hidden = true;
+        input.hidden = true;
+        label.hidden = true;
+        parrafor.hidden = false;
+        const valor = document.getElementById('chat-texto');
+        const texto = valor.value;
+        valor.value = "";
+        const texto1 = verificarNumero(letraactual,texto);
+        const idContenedor = 'contenedor-chat';
+        const etiquetaHTMLChat = 'p';
+        const parrafo = document.createElement(etiquetaHTMLChat);
+        const letra = texto; /// En la ventana del jugador
+        if(texto1==1)
+        {
+            const contenidoHTML = `
+        <div class="alert alert-primary" >
+            Se acabo el juego
+        </div>`;
+            parrafo.innerHTML = contenidoHTML;
+            anadirEtiqueta(idContenedor,parrafo);
+            peticionHolaMundo(letra);
+        }
+        else
+        {
+            const contenidoHTML = `
+        <div class="alert alert-primary" >
+            Esperemos que no adivinen tu número
+        </div>`;
+            parrafo.innerHTML = contenidoHTML;
+            anadirEtiqueta(idContenedor,parrafo);
+            peticionHolaMundo(letra);
+        }
+    };
+
+    function anadirEtiqueta(idEtiqueta, elementoHTML) {
+        const etiqueta = document.getElementById(idEtiqueta);
+        etiqueta.appendChild(elementoHTML);
+    }
+
+   /* function clicParrafo() {
+        alert('Why do you click this paragraph?');
+   } */
+</script>
+<script src="socket.io.js"> </script>
+<!--Busca dentro de la carpeta-->
+<script>
+    //Conexion de IP y puerto del ws
+    const url = 'http://localhost:3001/websockets';
+    const socket = io(url);
+    let letraactual = '';
+    socket.on(
+        'connect', // Nombre del evento
+        () => { //Funcion que va arealizar con dicho evento
+            console.log('Estamos conectados !!');
+        }
+    );
+    socket.on(
+        'disconnect', // Nombre del evento
+        () => { //Funcion que va arealizar con dicho evento
+            console.log(':( Se desconectó');
+        }
+    );
+    function peticionHolaMundo(texto) {
+        socket.emit('holaMundo',
+            { nombre: texto},
+            (respuesta) => {
+                console.log(respuesta); // Respuesta para el cliente
+        }
+        ); // segundo parametro datos, si es que si quisiera
+    }
+    socket.on('saludaron', (data) => {
+        letraactual = data.nombre;
+        const boton = document.getElementById('boton');
+        const input = document.getElementById('chat-texto');
+        const label = document.getElementById('labelt');
+        const parrafor = document.getElementById('espera');
+        boton.hidden = false;
+        input.hidden = false;
+        label.hidden = false;
+        parrafor.hidden = true;
+        const parrafo = document.createElement('p');
+        const letra = data.nombre;
+        const HTMLParrafo = `
+        <div >
+              Que número coloco tu contrincante:</strong>
+        </div>`;
+        parrafo.innerHTML = HTMLParrafo;
+        anadirEtiqueta('contenedor-chat',parrafo);
+    })
+</script>
+</body>
+</html>
